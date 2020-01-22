@@ -32,16 +32,21 @@ class RandomWord::CLI
     @word = RandomWord::Word.easy
     puts "Your easy word is #{@word.spelling}."
     details?
+    level
   end
 
   def medium
     @word = RandomWord::Word.medium
+    puts "Your medium word is #{@word.spelling}."
     details?
+    level
   end
 
   def hard
     @word = RandomWord::Word.hard
+    puts "Your hard word is #{@word.spelling}."
     details?
+    level
   end
 
   def details?
@@ -55,6 +60,7 @@ class RandomWord::CLI
     elsif input == "n"
       call
     end
+    level
   end
 
 end

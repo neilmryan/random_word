@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
-require './lib/random_word'
+require "bundler/setup"
+require "random_word"
 
 RandomWord::CLI.new.call
