@@ -4,7 +4,7 @@ class RandomWord::Word
 
   def self.easy
     #bat
-    # I should return a scraped word 5 letters or less
+    # I should return a scraped word 5 or fewer letters
     #puts "Here is your easy word."
     word = self.new
     word.spelling = "bat"
