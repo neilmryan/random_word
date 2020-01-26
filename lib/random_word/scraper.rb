@@ -34,7 +34,37 @@ class RandomWord::Scraper
     words_array
   end
 
+  # 5 or fewer letters
+  def self.get_easy_word
+    easy_words = []
+    self.get_words.each do |i|
+      if i.length <= 17
+      easy_words << i
+      end
+    end
+    easy_words.sample
+  end
 
+  # 10 or fewer letters
+  def self.get_medium_word
+    medium_words = []
+    self.get_words.each do |i|
+      if i.length.between?(18, 22)
+      medium_words << i
+      end
+    end
+    medium_words.sample
+  end
 
+  # Greater than 10 letters
+  def self.get_hard_word
+    hard_words = []
+    self.get_words.each do |i|
+      if i.length > 22
+      hard_words << i
+      end
+    end
+    hard_words.sample
+  end
 
 end
