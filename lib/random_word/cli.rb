@@ -25,26 +25,28 @@ class RandomWord::CLI
       level
     end
 
-
   end
 
   def easy
     @word = RandomWord::Word.easy
-    puts "Your easy word is #{@word.spelling}."
+    puts "Your easy word is #{@word.spelling.capitalize()}."
+    #puts "Your easy word is #{@word.spelling}."
     details?
     level
   end
 
   def medium
     @word = RandomWord::Word.medium
-    puts "Your medium word is #{@word.spelling}."
+    puts "Your medium word is #{@word}."
+    #puts "Your medium word is #{@word.spelling}."
     details?
     level
   end
 
   def hard
     @word = RandomWord::Word.hard
-    puts "Your hard word is #{@word.spelling}."
+    puts "Your hard word is #{@word}."
+    #puts "Your hard word is #{@word.spelling}."
     details?
     level
   end

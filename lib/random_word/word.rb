@@ -1,29 +1,39 @@
 class RandomWord::Word
 
-  attr_accessor :spelling, :length, :definition, :history
+  attr_accessor :spelling, :kind, :definition, :history
+
+  def initialize(spelling)
+    @spelling = spelling
+  end
 
   def self.easy
-    #bat
-    # I should return a scraped word 5 or fewer letters
-    #puts "Here is your easy word."
-    word = self.new
-    word.spelling = "bat"
-    word.length = "bat".length
-    word.definition = "a stout solid stick"
-    word.history = "Middle English, from Old English batt"
+    word = RandomWord::Scraper.get_easy_word
+    attributes = RandomWord::Scraper.get_word_attributes(word)
+    word = self.new(word)
+    word.kind = attributes[0]
+    word.definition = attributes[1]
+    word.history = attributes[2]
     word
   end
 
   def self.medium
-    #battle
-    # I should return a scraped between 5 and 10 letters
-    puts "Here is your medium word."
+    word = RandomWord::Scraper.get_medium_word
+    attributes = RandomWord::Scraper.get_word_attributes(word)
+    word = self.new(word)
+    word.kind = attributes[0]
+    word.definition = attributes[1]
+    word.history = attributes[2]
+    word
   end
 
   def self.hard
-    #battalions
-    # I should return a scraped word 10 or more letters
-    puts "Here is your hard word."
+    word = RandomWord::Scraper.get_hard_word
+    attributes = RandomWord::Scraper.get_word_attributes(word)
+    word = self.new(word)
+    word.kind = attributes[0]
+    word.definition = attributes[1]
+    word.history = attributes[2]
+    word
   end
 
 end

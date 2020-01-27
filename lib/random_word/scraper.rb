@@ -22,6 +22,7 @@ class RandomWord::Scraper
     url = url + "/#{num}"
   end
 
+  #scrapes all the words in the subpage for the letter
   def self.get_words
     url = self.url_letter_subpage
     doc = Nokogiri::HTML(open(url))
@@ -42,10 +43,10 @@ class RandomWord::Scraper
       easy_words << i
       end
     end
-    easy_words.sample
+    easy_words.sample.delete_prefix("/dictionary/")
   end
 
-  # 10 or fewer letters
+  # 5 or greater up to and including 10 letters
   def self.get_medium_word
     medium_words = []
     self.get_words.each do |i|
@@ -53,7 +54,7 @@ class RandomWord::Scraper
       medium_words << i
       end
     end
-    medium_words.sample
+    medium_words.sample.delete_prefix("/dictionary/")
   end
 
   # Greater than 10 letters
@@ -64,7 +65,40 @@ class RandomWord::Scraper
       hard_words << i
       end
     end
-    hard_words.sample
+    hard_words.sample.delete_prefix("/dictionary/")
+  end
+
+  #I should return an array of attributes
+  def self.get_word_attributes(word)
+    url = "https://www.merriam-webster.com/dictionary/#{word}"
+    puts url
+    doc = Nokogiri::HTML(open(url))
+
+    #Conditional handles when a word is a variant spelling or a plural of a parent-word by redirecting to the parent word.
+    if doc.search(".dtText").text == ""
+      parent_word = doc.search("a.cxt.text-uppercase").text
+      url = "https://www.merriam-webster.com/dictionary/#{parent_word}"
+      doc = Nokogiri::HTML(open(url))
+
+      definition = doc.search(".dtText").text
+      kind = doc.search(".important-blue-link").attribute("href").value.delete_prefix("/dictionary/")
+      history = doc.search(".et").text
+    #Conditional handles when the word is a geographical name (place).  
+    elsif doc.search(".important-blue-link").text == ""
+      definition = doc.search(".dtText").text
+      kind = doc.search("span.fl").text
+      history = "https://en.wikipedia.org/wiki/History_of_#{word}"
+    else
+      definition = doc.search(".dtText").text
+      kind = doc.search(".important-blue-link").attribute("href").value.delete_prefix("/dictionary/")
+      history = doc.search(".et").text
+    end
+
+    attributes = []
+    attributes << definition
+    attributes << kind
+    attributes << history
+    attributes
   end
 
 end
