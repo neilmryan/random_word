@@ -26,7 +26,7 @@ class RandomWord::Scraper
   def self.get_words
     url = self.url_letter_subpage
     doc = Nokogiri::HTML(open(url))
-    puts url
+    #puts url
     words = doc.search(".browse-words .entries ul li a")
     words_array = []
     words.each do |i|
@@ -70,34 +70,29 @@ class RandomWord::Scraper
 
   #I should return an array of attributes
   def self.get_word_attributes(word)
-    url = "https://www.merriam-webster.com/dictionary/#{word}"
-    puts url
+    url = "https://www.merriam-webster.com/dictionary/#{word.gsub(" ", "%20")}"
+    #puts url
     doc = Nokogiri::HTML(open(url))
 
     #Conditional handles when a word is a variant spelling or a plural of a parent-word by redirecting to the parent word.
     if doc.search(".dtText").text == ""
       parent_word = doc.search("a.cxt.text-uppercase").text
-      url = "https://www.merriam-webster.com/dictionary/#{parent_word}"
+      url = "https://www.merriam-webster.com/dictionary/#{parent_word.gsub(" ", "%20")}"
       doc = Nokogiri::HTML(open(url))
-
       definition = doc.search(".dtText").text
       kind = doc.search(".important-blue-link").attribute("href").value.delete_prefix("/dictionary/")
-      history = doc.search(".et").text
-    #Conditional handles when the word is a geographical name (place).  
+    #Conditional handles when the word is a geographical name (place).
     elsif doc.search(".important-blue-link").text == ""
       definition = doc.search(".dtText").text
       kind = doc.search("span.fl").text
-      history = "https://en.wikipedia.org/wiki/History_of_#{word}"
     else
       definition = doc.search(".dtText").text
       kind = doc.search(".important-blue-link").attribute("href").value.delete_prefix("/dictionary/")
-      history = doc.search(".et").text
     end
 
     attributes = []
     attributes << definition
     attributes << kind
-    attributes << history
     attributes
   end
 
