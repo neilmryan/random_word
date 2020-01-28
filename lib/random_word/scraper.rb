@@ -1,17 +1,13 @@
 class RandomWord::Scraper
-
   #a random word needs a random number
   def self.random_letter
-    #letter = Random.new.rand(26)
     ('a'..'z').to_a.sample
   end
-
   #gets the main-letter page
   def self.url_letter
     letter = self.random_letter
     url = "https://www.merriam-webster.com/browse/dictionary/#{letter}"
   end
-
   #gets the sub-page for the letter
   def self.url_letter_subpage
     url = self.url_letter
@@ -21,12 +17,10 @@ class RandomWord::Scraper
     num = (rand(1..range))
     url = url + "/#{num}"
   end
-
   #scrapes all the words in the subpage for the letter
   def self.get_words
     url = self.url_letter_subpage
     doc = Nokogiri::HTML(open(url))
-    #puts url
     words = doc.search(".browse-words .entries ul li a")
     words_array = []
     words.each do |i|
@@ -34,7 +28,6 @@ class RandomWord::Scraper
     end
     words_array
   end
-
   # 5 or fewer letters
   def self.get_easy_word
     easy_words = []
@@ -45,7 +38,6 @@ class RandomWord::Scraper
     end
     easy_words.sample.delete_prefix("/dictionary/")
   end
-
   # 5 or greater up to and including 10 letters
   def self.get_medium_word
     medium_words = []
@@ -56,7 +48,6 @@ class RandomWord::Scraper
     end
     medium_words.sample.delete_prefix("/dictionary/")
   end
-
   # Greater than 10 letters
   def self.get_hard_word
     hard_words = []
@@ -67,13 +58,10 @@ class RandomWord::Scraper
     end
     hard_words.sample.delete_prefix("/dictionary/")
   end
-
   #I should return an array of attributes
   def self.get_word_attributes(word)
     url = "https://www.merriam-webster.com/dictionary/#{word.gsub(" ", "%20")}"
-    #puts url
     doc = Nokogiri::HTML(open(url))
-
     #Conditional handles when a word is a variant spelling or a plural of a parent-word by redirecting to the parent word.
     if doc.search(".dtText").text == ""
       parent_word = doc.search("a.cxt.text-uppercase").text
@@ -89,11 +77,9 @@ class RandomWord::Scraper
       definition = doc.search(".dtText").text
       kind = doc.search(".important-blue-link").attribute("href").value.delete_prefix("/dictionary/")
     end
-
     attributes = []
     attributes << definition
     attributes << kind
     attributes
   end
-
 end

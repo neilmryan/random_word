@@ -35,5 +35,4 @@ class RandomWord::Word
     word.synonyms = "https://www.thesaurus.com/browse/#{word.spelling}"
     word
   end
-
 end

@@ -11,7 +11,6 @@ class RandomWord::CLI
     puts 'To exit type "q"'
     input = gets.strip.downcase
     case input
-
     when "e"
       easy
     when "m"
@@ -24,34 +23,29 @@ class RandomWord::CLI
       puts 'I do not understand your entry!'
       level
     end
-
   end
 
   def easy
     @word = RandomWord::Word.easy
     puts "Your easy word is #{@word.spelling.capitalize()}."
-    puts ""
     details?
   end
 
   def medium
     @word = RandomWord::Word.medium
     puts "Your medium word is #{@word.spelling.capitalize()}."
-    puts ""
     details?
   end
 
   def hard
     @word = RandomWord::Word.hard
     puts "Your hard word is #{@word.spelling.capitalize()}."
-    puts ""
     details?
   end
 
   def details?
     puts "Would you like the definition and other details? (y/n)"
     input = gets.strip.downcase
-
     if input == "y"
       puts "The word #{@word.spelling.capitalize()} is of type: #{@word.kind}, and is #{@word.spelling.length} letters long."
       puts ""
